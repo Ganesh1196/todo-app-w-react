@@ -16,12 +16,28 @@ function App() {
     { input: 'Hello! Add your first todo! 1', complete: true }
   ])
   const [selectedTab, setSelectedTab] = useState("Open")
+  const [editIndex, setEditIndex] = useState(null);
+  const [inputValue, setInputValue] = useState("");
 
   function handleAddTodo(newTodo){
     //The below code duplicates the todo by spreading and adding the following userinput to the end of the list
-    const newTodoList = [...todos, { input: newTodo, complete: false}]
-    setTodos(newTodoList)
-    handleSaveData(newTodoList)
+    // const newTodoList = [...todos, { input: newTodo, complete: false}]
+    // setTodos(newTodoList)
+    // handleSaveData(newTodoList)
+    if (editIndex !== null) {
+      // Editing existing todo
+      let newTodoList = [...todos]
+      newTodoList[editIndex] = { input: newTodo, complete: false }
+      setTodos(newTodoList)
+      setEditIndex(null)
+    } else {
+      // Adding new todo
+      const newTodoList = [...todos, { input: newTodo, complete: false }]
+      setTodos(newTodoList)
+    }
+  
+    setInputValue("")  // clear input
+    handleSaveData(todos)
   }
 
   function handleCompleteTodo(index){
@@ -43,6 +59,14 @@ function App() {
     handleSaveData(newTodoList)
   }
 
+  function handleEditTodo(index){
+    //
+    setInputValue(todos[index].input)
+    setEditIndex(index)
+    
+  }
+
+
   function handleSaveData(currTodos){
     localStorage.setItem("todo-app", JSON.stringify({todos: currTodos}))
   }
@@ -60,8 +84,9 @@ function App() {
       {/* components are listed here and render as per the hierarchy below */}
       <Header todos={todos} />
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} todos={todos} />
-      <TodoInput handleAddTodo = {handleAddTodo}/>
-      <TodoList handleCompleteTodo={handleCompleteTodo} handleDeleteTodo={handleDeleteTodo} selectedTab={selectedTab} todos={todos} />
+      <TodoInput handleAddTodo = {handleAddTodo} inputValue={inputValue}
+  setInputValue={setInputValue}/>
+      <TodoList handleEditTodo={handleEditTodo} handleCompleteTodo={handleCompleteTodo} handleDeleteTodo={handleDeleteTodo} selectedTab={selectedTab} todos={todos} />
     </>
   )
 }

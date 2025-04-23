@@ -1,8 +1,9 @@
 import { useState } from "react"
 
 export function TodoInput(props) {
-    const { handleAddTodo } = props
-    const [inputValue, setInputValue] = useState("")
+    const { handleAddTodo,  inputValue, setInputValue } = props
+    
+    
     console.log(inputValue)
     return (
         //This is input container where user adds a task
@@ -24,4 +25,5 @@ export function TodoInput(props) {
             </button>
         </div>
     )
+    
 }
