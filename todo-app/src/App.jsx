@@ -24,20 +24,21 @@ function App() {
     // const newTodoList = [...todos, { input: newTodo, complete: false}]
     // setTodos(newTodoList)
     // handleSaveData(newTodoList)
-    if (editIndex !== null) {
-      // Editing existing todo
-      let newTodoList = [...todos]
-      newTodoList[editIndex] = { input: newTodo, complete: false }
-      setTodos(newTodoList)
-      setEditIndex(null)
+    if (editIndex === null) {
+     // Adding new todo
+     const newTodoList = [...todos, { input: newTodo, complete: false }]
+     setTodos(newTodoList)
+     handleSaveData(newTodoList)
     } else {
-      // Adding new todo
-      const newTodoList = [...todos, { input: newTodo, complete: false }]
-      setTodos(newTodoList)
+       // Editing existing todo
+       let newTodoList = [...todos]
+       newTodoList[editIndex] = { input: newTodo, complete: false }
+       setTodos(newTodoList)
+       setEditIndex(null)
+       handleSaveData(newTodoList)
     }
-  
     setInputValue("")  // clear input
-    handleSaveData(todos)
+    
   }
 
   function handleCompleteTodo(index){
